@@ -2,7 +2,7 @@ import axios from 'axios';
 import { UserPage } from '../@types';
 import { handleError } from './utils';
 import { User } from '../@types';
-import axiosInstance from './axious-instance';
+import axiosInstance from './axios-instance';
 
 
 
@@ -18,3 +18,6 @@ export const getUser = (id: number | undefined) =>
         .get<User>(
             `/api/users/${id}`
         ).catch(handleError);
+        
+export const updateUser = (user: User) =>
+    axiosInstance.put<User>('/api/users/').catch(handleError);

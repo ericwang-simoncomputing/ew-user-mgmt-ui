@@ -10,3 +10,7 @@ export interface UserPage {
   page: number,
   total: number
 }
+
+export interface Errors {
+  [key: string]: string
+}
