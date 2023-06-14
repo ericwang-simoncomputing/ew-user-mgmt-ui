@@ -3,6 +3,9 @@ import * as React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 import { User } from '../../@types';
+import { UserPage } from '../../@types';
+import { getUserPage } from '../../service/users';
+
 
 interface Props {
     users: User[],
@@ -10,9 +13,15 @@ interface Props {
 }
 
 
-const UserList: React.FC<Props> = props => {
-    const { users, onSelectUser } = props;
+const UserList: React.FC<Props> = ({ onSelectUser }) => {
+    const [users, setUsers] = React.useState<User[]>([]);
 
+
+    React.useEffect(() => {
+        getUserPage(0, 10, 'id').then(res => {
+            setUsers(res.data.list);
+        });
+    }, []);
 
     return (
         <Table>
