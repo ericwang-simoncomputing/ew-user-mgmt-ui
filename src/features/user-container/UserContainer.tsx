@@ -6,52 +6,14 @@ import UserList from '../user-list/UserList';
 import { Card, CardContent, CardHeader, Grid } from '@mui/material';
 
 interface State {
-    selectedUser: User;
+    selectedUserId: number | undefined;
 }
 
 const UserContainer: React.FC = () => {
-    const [selectedUser, setSelectedUser] = React.useState<User>({
-        id: undefined,
-        firstName: '',
-        lastName: '',
-        email: ''
-    });
+    const [selectedUserId, setSelectedUserId] = React.useState<number | undefined >(undefined);
 
-    const users: User[] = [
-        {
-            id: 1,
-            firstName: 'Homer',
-            lastName: 'Simpson',
-            email: 'homer@simpson.com'
-        },
-        {
-            id: 2,
-            firstName: 'Marge',
-            lastName: 'Simpson',
-            email: 'marge@simpson.com'
-        },
-        {
-            id: 3,
-            firstName: 'Lisa',
-            lastName: 'Simpson',
-            email: 'lisa@simpson.com'
-        },
-        {
-            id: 4,
-            firstName: 'Bart',
-            lastName: 'Simpson',
-            email: 'bart@simpson.com'
-        },
-        {
-            id: 5,
-            firstName: 'Maggie',
-            lastName: 'Simpson',
-            email: 'maggie@simpson.com'
-        }
-    ];
-
-    const handleSelectUser = (idx: number) => {
-        setSelectedUser(users[idx]);
+    const handleSelectUser = (idx: number | undefined) => {
+        setSelectedUserId(idx);
     };
 
     return (
@@ -60,7 +22,7 @@ const UserContainer: React.FC = () => {
                 <Card>
                     <CardHeader title='Users' />
                     <CardContent>
-                        <UserList users={users} onSelectUser={handleSelectUser} />
+                        <UserList onSelectUser={handleSelectUser} />
                     </CardContent>
                 </Card>
             </Grid>
@@ -68,7 +30,7 @@ const UserContainer: React.FC = () => {
                 <Card>
                     <CardHeader title='Selected User' />
                     <CardContent>
-                        <UserDetail user={selectedUser} />
+                        <UserDetail userId={selectedUserId} />
                     </CardContent>
                 </Card>
             </Grid>

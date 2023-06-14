@@ -5,9 +5,10 @@ import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { Errors } from '../../@types';
 import { updateUser } from '../../service/users';
+import { getUser } from '../../service/users';
 
 interface Props {
-    user: User;
+    userId: number | undefined;
 }
 const schema = yup.object<User>().shape({
     firstName: yup.string().required('First name is required'),
@@ -15,8 +16,14 @@ const schema = yup.object<User>().shape({
     email: yup.string().email('Must be in email format').required('Email is required')
 });
 
-const UserDetail: React.FC<Props> = ({ user: initialUser }) => {
-    const [user, setUser] = React.useState<User>(initialUser);
+const UserDetail: React.FC<Props> = props => {
+    const userId = props.userId;
+    const [user, setUser] = React.useState<User>({
+        id: undefined,
+        firstName: "",
+        lastName: "",
+        email: ""
+    });
 
     const [errors, setErrors] = React.useState<Errors>({});
 
@@ -37,17 +44,21 @@ const UserDetail: React.FC<Props> = ({ user: initialUser }) => {
                 }
                 setErrors(list);
             });
-
     }
 
-    const handleChange = (name: keyof User) => (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setUser((prevUser) => ({
-            ...prevUser,
-            [name]: event.target.value,
-        }));
-    };
+    const handleChange = (name: keyof User) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUser({ ...user, [name]: event.target.value });
+    }
+
+    React.useEffect(() => {
+        if (userId != undefined) {
+            getUser(userId).then(res => {
+                setUser(res.data);
+            });
+        }
+    }, [userId]);
+
+
 
     return (
         <form onSubmit={handleSubmit}>

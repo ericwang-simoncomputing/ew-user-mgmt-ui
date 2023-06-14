@@ -8,8 +8,7 @@ import { getUserPage } from '../../service/users';
 
 
 interface Props {
-    users: User[],
-    onSelectUser: (idx: number) => void;
+    onSelectUser: (id: number | undefined) => void;
 }
 
 
@@ -33,11 +32,11 @@ const UserList: React.FC<Props> = ({ onSelectUser }) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {users.map((user, idx) => {
+                {users.map((user) => {
                     return <TableRow
                         key={'user-' + user.id}
                         hover={true}
-                        onClick={() => onSelectUser(idx)}
+                        onClick={() => onSelectUser(user.id)}
                     >
                         <TableCell>{user.id}</TableCell>
                         <TableCell>{user.firstName}</TableCell>
