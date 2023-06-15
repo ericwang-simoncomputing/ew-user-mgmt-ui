@@ -5,16 +5,21 @@ import Button from '@mui/material/Button';
 import * as yup from 'yup';
 import { Errors } from '../../@types';
 import { updateUser } from '../../service/users';
+import { createUser } from '../../service/users';
 import { getUser } from '../../service/users';
 import { useParams } from 'react-router-dom';
+
+import { useNavigate } from 'react-router-dom';
+
 
 
 
 const schema = yup.object<User>().shape({
     firstName: yup.string().required('First name is required'),
     lastName: yup.string().required('Last name is required'),
-    email: yup.string().email('Must be in email format').required('Email is required')
-});
+    email: yup.string().email('Must be in email format').required('Email is required'),
+    password: yup.string(), // Made the password field optional
+  });
 
 const UserDetail: React.FC = () => {
     const { userId } = useParams();
@@ -22,8 +27,11 @@ const UserDetail: React.FC = () => {
         id: undefined,
         firstName: "",
         lastName: "",
-        email: ""
+        email: "",
+        password: ""
     });
+
+    const navigate = useNavigate();
 
     const [errors, setErrors] = React.useState<Errors>({});
 
@@ -36,8 +44,15 @@ const UserDetail: React.FC = () => {
                     updateUser(user).then(res => {
                         setUser(res.data);
                     });
+                } else {
+                    createUser(user).then(res => {
+                        setUser(res.data);
+                        const createdUserId = res.data.id;
+                        navigate(`/user/view/${createdUserId}`);
+                    });
                 }
-            }).catch((err: yup.ValidationError) => {
+            })
+            .catch((err: yup.ValidationError) => {
                 const list: Errors = {};
                 for (const e of err.inner) {
                     if (e.path) list[e.path] = e.message;
@@ -92,7 +107,16 @@ const UserDetail: React.FC = () => {
                 error={!!errors['email']}
                 helperText={errors['email']}
             />
-
+            <TextField
+                label="Password"
+                fullWidth
+                value={user.password}
+                margin="dense"
+                variant="outlined"
+                onChange={handleChange('password')}
+                error={!!errors['password']}
+                helperText={errors['password']}
+            />
             <Button type="submit" variant="contained" color="primary">
                 Save
             </Button>

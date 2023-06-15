@@ -7,20 +7,20 @@ import { UserPage } from '../../@types';
 import { getUserPage } from '../../service/users';
 import { useNavigate } from 'react-router-dom';
 
-
-const navigate = useNavigate();
-
-const onSelectUser = (id: number | undefined) => {
-    if (id) {
-        navigate(`/user/view/${id}`);
-    }
-}
+import Button from '@mui/material/Button';
 
 const UserList: React.FC = () => {
-    const onSelectUser = (id: number | undefined) => {
-        // route to user view page
-    }
 
+    const navigate = useNavigate();
+    const onSelectUser = (id: number | undefined) => {
+        if (id) {
+            navigate(`/user/view/${id}`);
+        }
+        else
+        {
+            navigate('/user/new');
+        }
+    }
     const [users, setUsers] = React.useState<User[]>([]);
     React.useEffect(() => {
         getUserPage(0, 10, 'id').then(res => {
@@ -38,6 +38,9 @@ const UserList: React.FC = () => {
                 </TableRow>
             </TableHead>
             <TableBody>
+                <Button variant="contained" color="primary" onClick={() => navigate('/user/new')}>
+                    Create User
+                </Button>
                 {users.map((user) => {
                     return <TableRow
                         key={'user-' + user.id}

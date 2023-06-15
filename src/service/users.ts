@@ -19,4 +19,6 @@ export const getUser = (id: number | undefined) =>
             `/api/users/${id}`
         ).catch(handleError);
 export const updateUser = (user: User) =>
-    axiosInstance.put<User>('/api/users/', {id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email}).catch(handleError);
+    axiosInstance.put<User>('/api/users/', { id: user.id, firstName: user.firstName, lastName: user.lastName, email: user.email }).catch(handleError);
+export const createUser = (user: User) =>
+    axiosInstance.post<User>('/api/users/', user).catch(handleError);
