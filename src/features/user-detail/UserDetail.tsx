@@ -19,16 +19,16 @@ const schema = yup.object<User>().shape({
     lastName: yup.string().required('Last name is required'),
     email: yup.string().email('Must be in email format').required('Email is required'),
     password: yup.string(), // Made the password field optional
-  });
+});
 
 const UserDetail: React.FC = () => {
     const { userId } = useParams();
     const [user, setUser] = React.useState<User>({
         id: undefined,
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: ""
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
     });
 
     const navigate = useNavigate();
