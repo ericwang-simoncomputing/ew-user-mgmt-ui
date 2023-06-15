@@ -5,17 +5,23 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { User } from '../../@types';
 import { UserPage } from '../../@types';
 import { getUserPage } from '../../service/users';
+import { useNavigate } from 'react-router-dom';
 
 
-interface Props {
-    onSelectUser: (id: number | undefined) => void;
+const navigate = useNavigate();
+
+const onSelectUser = (id: number | undefined) => {
+    if (id) {
+        navigate(`/user/view/${id}`);
+    }
 }
 
+const UserList: React.FC = () => {
+    const onSelectUser = (id: number | undefined) => {
+        // route to user view page
+    }
 
-const UserList: React.FC<Props> = ({ onSelectUser }) => {
     const [users, setUsers] = React.useState<User[]>([]);
-
-
     React.useEffect(() => {
         getUserPage(0, 10, 'id').then(res => {
             setUsers(res.data.list);

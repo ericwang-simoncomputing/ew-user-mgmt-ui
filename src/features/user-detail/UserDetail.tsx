@@ -6,18 +6,18 @@ import * as yup from 'yup';
 import { Errors } from '../../@types';
 import { updateUser } from '../../service/users';
 import { getUser } from '../../service/users';
+import { useParams } from 'react-router-dom';
 
-interface Props {
-    userId: number | undefined;
-}
+
+
 const schema = yup.object<User>().shape({
     firstName: yup.string().required('First name is required'),
     lastName: yup.string().required('Last name is required'),
     email: yup.string().email('Must be in email format').required('Email is required')
 });
 
-const UserDetail: React.FC<Props> = props => {
-    const userId = props.userId;
+const UserDetail: React.FC = () => {
+    const { userId } = useParams();
     const [user, setUser] = React.useState<User>({
         id: undefined,
         firstName: "",
@@ -52,7 +52,7 @@ const UserDetail: React.FC<Props> = props => {
 
     React.useEffect(() => {
         if (userId != undefined) {
-            getUser(userId).then(res => {
+            getUser(Number(userId)).then(res => {
                 setUser(res.data);
             });
         }

@@ -5,15 +5,15 @@ import UserDetail from '../user-detail/UserDetail';
 import UserList from '../user-list/UserList';
 import { Card, CardContent, CardHeader, Grid } from '@mui/material';
 
-interface State {
-    selectedUserId: number | undefined;
-}
+// interface State {
+//     selectedUserId: number | undefined;
+// }
 
 const UserContainer: React.FC = () => {
     const [selectedUserId, setSelectedUserId] = React.useState<number | undefined >(undefined);
 
-    const handleSelectUser = (idx: number | undefined) => {
-        setSelectedUserId(idx);
+    const handleSelectUser = (id: number | undefined) => {
+        setSelectedUserId(id);
     };
 
     return (
@@ -22,7 +22,7 @@ const UserContainer: React.FC = () => {
                 <Card>
                     <CardHeader title='Users' />
                     <CardContent>
-                        <UserList onSelectUser={handleSelectUser} />
+                        <UserList />
                     </CardContent>
                 </Card>
             </Grid>
@@ -30,7 +30,7 @@ const UserContainer: React.FC = () => {
                 <Card>
                     <CardHeader title='Selected User' />
                     <CardContent>
-                        <UserDetail userId={selectedUserId} />
+                        <UserDetail />
                     </CardContent>
                 </Card>
             </Grid>
